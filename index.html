@@ -450,11 +450,45 @@ const koreanRaw = [
 ["Epii Double Up Cream – Ectoin & Panthenol 50ml","W3n388Wm/9b1ba74c-6ae3-4e4e-803d-a96f3ebc03c6.jpg",1500,1235],
 ["Purito Mighty Bamboo Panthenol Cream 100ml","sxH2dXRh/521cad8f-c5e1-4fe0-8607-19ee138661ab.jpg",1250,1050],
 ["I'm From Rice Toner 150ml","nc5L3C2f/bc75af6d-bbef-4883-b312-b5a58f9f841b.jpg",1250,1050],
-["Isntree Onion Newpair Booster Shot 2000 – 50ml","Lsk64vpM/725f3073-4539-43a7-9293-8a90f5abaa94.jpg",1350,1150]
+["Isntree Onion Newpair Booster Shot 2000 – 50ml","Lsk64vpM/725f3073-4539-43a7-9293-8a90f5abaa94.jpg",1350,1150],
+["Anua PDRN Hyaluronic Acid 100 Moisturizing Cream Set (60 ml + 30 ml)","XNmyTxcY/1bcc61d7-89b6-4b7e-a52b-7a0cf59bcf07.jpg",1400,1060]
 ];
 const koreanProducts = koreanRaw.map(function(r) {
 return { name: r[0], image: IMG_BASE + r[1], oldPrice: r[2], newPrice: r[3] };
 });
+const kidsRaw = [
+["Blankie 3 in 1 Shampoo + Conditioner + Body Wash","Zqb9rQZ1/c4d76692-b4fb-4ac2-897b-bd28dde931f1.jpg",200,100],
+["Blankie Kids Hair Cream Anti-Frizz","vBDcK64x/96e53724-f5d7-4a3d-9c94-7747c757773d.jpg",210,110],
+["Blankie Kids Moisturizing Sunscreen SPF 50+","3R6dQJG9/6bf4ed99-9b04-4317-b8f9-cdff103cf95a.jpg",215,105],
+["Blankie Diaper Rash Cream","KjM4GSrT/91ee1c98-6a85-478c-9f4a-e47db64fe566.jpg",180,65],
+["Blankie Daily Moisturizer Face & Body","tRwrRKGc/7c84795f-4c5a-45bb-83db-6a44565afb7e.jpg",120,60],
+["Blankie Daily Moisturizer Face & Body","tRwrRKGc/7c84795f-4c5a-45bb-83db-6a44565afb7e.jpg",240,120],
+["Blankie Roll-On Deodorant Cotton Candy 6+","T3qQ9h5g/d6fe05fc-283b-462b-ae8e-04dc4f1b3c82.jpg",180,100],
+["Blankie Baby Oil – Body & Hair","XJX848HB/dfed301b-a1f6-4772-b454-726529d033a3.jpg",150,70],
+["Penduline Curly Kids Conditioner","zvgFRf1B/69c1d5f3-6486-4608-960f-1ceda8a225e9.jpg",240,205],
+["Penduline Moringa Kids Conditioner","jdyhxCXC/6f5e7f5a-7a75-4f81-9a00-c5bcb87afe28.jpg",230,200],
+["Penduline Baby Body Lotion Blue Chamomile","4xZQmZ2X/abcecee0-9e6b-4f6b-b780-388849495237.jpg",225,195],
+["Penduline Baby Cologne – Baby Powder","HLk09zCz/21e1d752-9214-4ecc-b8f1-11ad1a34ccb0.jpg",130,110],
+["Penduline Kids Perfume – Alcohol Free","d178z037/da0eb9e1-c74c-4160-a266-2145cf345f80.jpg",160,140],
+["Penduline Curly Hair Gel for Kids","x8ML1FLh/1c4e8f65-c3b5-4366-b40a-176a4c845b44.jpg",180,150],
+["Penduline Kids Hair Cream – Shea Butter","8Pgh0NS6/b917cb29-2770-4383-a3be-dae479ee4d23.jpg",230,199],
+["Penduline Kids Moisturizing Cream","3JjgMVrM/3d8cb411-601d-4ffb-9aa7-30c48a5240cb.jpg",150,130],
+["Super Kids 3-in-1 Shampoo, Conditioner & Bath Gel (Strawberry Milkshake - 500 ml)","fRBmyd0v/8a2a5386-1cdc-4fbc-82f9-82162e179ac7.jpg",220,200],
+["Super Kids Curly Hair Gel (250 ml)","bYknbW2K/e790aba8-b3f9-4cfc-9bd6-886bb59afea7.jpg",160,140],
+["Super Kids Leave-In Conditioner Curls Activator (250 ml)","135VkzY6/61cc5e0b-1761-4f80-a076-bc6f87a75148.jpg",170,150],
+["Super Kids Hair Cream Easy Styling (200 ml)","0NzMNBst/e448fae9-5092-4509-9e53-796f7ed48098.jpg",150,130],
+["Super Kids Roll On Deodorant For Kids Lollipop Scent (40 ml)","s2bBG4fv/9ea35798-b171-4518-82d2-1ac30f9ba351.jpg",120,99],
+["Super Kids 95% Water Wipes (72 Wipes)","5ySjGcBC/8e29fa5f-f67a-4502-b658-9347ba8beae4.jpg",110,90],
+["Johnson's Baby Shampoo (200 ml)","vHXctsHw/3b4bb8b5-b35a-4c09-8e51-3d9ef969dfd8.jpg",160,120],
+["Johnson's No More Tangles Kids Shampoo (200 ml)","mr1k413x/12406d9c-ea70-4883-a8a6-dd8638e474d0.jpg",180,130],
+["Johnson's Sleep Time Bath (300 ml)","3Rgw4Mbf/f547955e-ab30-477b-99c2-67156d8296d7.jpg",200,140],
+["Moist-1 Baby Cream 15% Zinc Oxide (150 g)","pdXPqhrn/bfa3ea20-2888-4f2c-9299-99ce498747e1.jpg",180,150],
+["Happiness Baby Dreams Soothing Cream for Diapers Area","3wRH2sf4/05840a38-ae1e-4fac-91c6-a589bf728d54.jpg",180,125],
+["Happiness Baby Dreams Hair Cream 150 ml","9QX3h3hw/ba91fbeb-0755-4b4c-afd0-e1023f921765.jpg",210,185],
+["Happiness Baby Dreams Hair Oil","T3tz2k2M/cd51443e-2645-4c19-8f79-a2a3d47e0084.jpg",235,190],
+["Happiness Baby Dreams Hair Cream (300 gm)","RFHyR4c2/a4aa76bf-7eba-4a1b-b98e-d53aab9e60c7.jpg",290,250],
+["Happiness Baby Dreams Shampoo 2 in 1 (400 ML)","yxhGMjrH/c02fbf90-bc29-40dd-bd08-58253248d6b0.jpg",240,210]
+];
 const categoryProducts = {
 "Skin Care": [
 { name: "Skin Care Product 1", price: 180 },
@@ -477,13 +511,15 @@ const categoryProducts = {
 { name: "Body Care Product 4", price: 280 },
 { name: "Body Care Product 5", price: 350 }
 ],
-"Kids": [
+"Kids": kidsRaw.map(function(r) {
+return { name: r[0], image: IMG_BASE + r[1], oldPrice: r[2], newPrice: r[3] };
+}).concat([
 { name: "Kids Product 1", price: 180 },
 { name: "Kids Product 2", price: 240 },
 { name: "Kids Product 3", price: 320 },
 { name: "Kids Product 4", price: 280 },
 { name: "Kids Product 5", price: 350 }
-]
+])
 };
 function similarityScore(s1, s2) {
 let longer = s1, shorter = s2;
@@ -602,9 +638,9 @@ for (let cat in categoryProducts) {
 categoryProducts[cat].forEach(p => {
 allProds.push({
 name: p.name,
-image: "",
-newPrice: p.price,
-oldPrice: null
+image: p.image || "",
+newPrice: p.newPrice || p.price,
+oldPrice: p.oldPrice || null
 });
 });
 }
