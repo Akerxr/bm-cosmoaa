@@ -69,25 +69,34 @@
 
     if (!name || !price || !fileInput.files[0]) {
       msg.style.color = "red";
-      msg.innerText = "من فضلك املأ البيانات واختر صورة المنتج";
+      msg.innerText = "من فضلك املأ كل البيانات واختر صورة للمنتج";
       return;
     }
 
     btn.disabled = true;
     msg.style.color = "#333";
-    msg.innerText = "جاري رفع الصورة والمنتج...";
+    msg.innerText = "جاري الرفع...";
 
     try {
       const file = fileInput.files[0];
-      const fileName = Date.now() + "_" + file.name;
+      // تنظيف اسم الملف وحفظه بأرقام ورموز عشوائية بسيطة لتفادي مشاكل الأجهزة والمتصفحات
+      const fileExt = file.name.split('.').pop();
+      const cleanFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
 
       // 1. رفع الصورة مباشرة لمخزن الصور Storage
-      const { data: imgData, error: imgErr } = await _supabase.storage.from("products").upload(fileName, file);
+      const { data: imgData, error: imgErr } = await _supabase.storage
+        .from("products")
+        .upload(cleanFileName, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+
       if (imgErr) throw imgErr;
 
-      const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
+      // رابط الصورة المرفوعة
+      const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/products/${cleanFileName}`;
 
-      // 2. إدخال بيانات المنتج والرسوم في الجدول
+      // 2. إدخال بيانات المنتج والرسوم في قاعدة البيانات
       const { error: dbErr } = await _supabase.from("products").insert([{
         name: name,
         category: category,
@@ -105,8 +114,9 @@
       document.getElementById("p-old-price").value = "";
       fileInput.value = "";
     } catch (err) {
+      console.error(err);
       msg.style.color = "red";
-      msg.innerText = "حدث خطأ: " + err.message;
+      msg.innerText = "حدث خطأ: " + (err.message || err.error_description || JSON.stringify(err));
     } finally {
       btn.disabled = false;
     }
