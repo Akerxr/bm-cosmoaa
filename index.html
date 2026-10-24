@@ -11,6 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Supabase JS Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--primary-pink:#ffb6c1;--deep-pink:#d81b60;--gold:#c5a059;--light-gold:#f4e8c1;--dark-bg:#fff5f8;--text-color:#333333;--white:#ffffff;--shadow:0 8px 25px rgba(197,160,89,0.12);}*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;overflow-x:hidden;}body{font-family:'Cairo',sans-serif;background:var(--dark-bg);color:var(--text-color);overflow-x:hidden;min-width:0;}img{max-width:100%;}button,input,textarea{font-family:inherit;}a{text-decoration:none;color:inherit;}#loading-screen{position:fixed;inset:0;z-index:999999;background:#ffffff;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .4s ease;animation:loaderAutoHide .4s ease 2s forwards;}@keyframes loaderAutoHide{to{opacity:0;visibility:hidden;pointer-events:none;}}#loading-screen img{width:120px;height:120px;object-fit:contain;margin-bottom:15px;animation:loadingPulse 1.2s infinite ease-in-out;}.loading-text{color:var(--deep-pink);font-size:18px;font-weight:900;}.loading-dots{display:flex;gap:5px;margin-top:10px;}.loading-dots span{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:loadingDots 1s infinite ease-in-out;}.loading-dots span:nth-child(2){animation-delay:.15s;}.loading-dots span:nth-child(3){animation-delay:.3s;}@keyframes loadingPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}@keyframes loadingDots{0%,100%{transform:translateY(0);opacity:.4;}50%{transform:translateY(-5px);opacity:1;}}navbar{position:sticky;top:0;z-index:1000;width:100%;min-height:65px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(197,160,89,.18);display:flex;align-items:center;justify-content:space-between;gap:15px;padding:10px 25px;box-shadow:0 3px 15px rgba(0,0,0,.04);}.nav-brand{display:flex;align-items:center;gap:9px;flex-shrink:0;}.nav-brand img{width:40px;height:40px;object-fit:contain;}.nav-brand span{color:var(--deep-pink);font-weight:900;font-size:17px;white-space:nowrap;}.nav-links{display:flex;align-items:center;justify-content:center;gap:22px;flex:1;min-width:0;}.nav-links li{list-style:none;flex-shrink:0;}.nav-links a{position:relative;color:var(--text-color);font-size:14px;font-weight:600;white-space:nowrap;transition:.25s;}.nav-links a::after{content:"";position:absolute;right:0;bottom:-6px;width:0;height:2px;background:var(--deep-pink);transition:.25s;}.nav-links a:hover{color:var(--deep-pink);}.nav-links a:hover::after{width:100%;}.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}.lang-btn,.cart-icon-btn{border:none;cursor:pointer;border-radius:8px;transition:.25s;}.lang-btn{background:var(--light-gold);color:#6b5221;padding:7px 12px;font-size:12px;font-weight:700;}.cart-icon-btn{position:relative;background:var(--deep-pink);color:white;padding:8px 11px;font-size:14px;}#cart-count{position:absolute;top:-7px;right:-7px;min-width:19px;height:19px;display:flex;justify-content:center;align-items:center;background:var(--gold);color:white;border-radius:50%;font-size:10px;font-weight:700;}.search-container{max-width:600px;margin:0 auto 30px auto;position:relative;}.search-input-wrap{position:relative;display:flex;align-items:center;}.search-input-wrap i{position:absolute;right:15px;color:var(--deep-pink);font-size:16px;}.search-input{width:100%;padding:12px 45px 12px 15px;border:1px solid rgba(197,160,89,.3);background:white;border-radius:12px;outline:none;font-size:14px;box-shadow:var(--shadow);transition:.25s;}.search-input:focus{border-color:var(--deep-pink);box-shadow:0 5px 15px rgba(216,27,96,0.1);}html[dir="ltr"] .search-input-wrap i{right:auto;left:15px;}html[dir="ltr"] .search-input{padding:12px 15px 12px 45px;}#floating-checkout{position:fixed;bottom:20px;left:20px;z-index:5000;display:none;align-items:center;justify-content:center;gap:9px;border:none;border-radius:12px;padding:12px 18px;background:var(--deep-pink);color:white;box-shadow:0 8px 25px rgba(216,27,96,.28);cursor:pointer;font-size:13px;font-weight:800;transition:.25s;}#floating-checkout.show{display:flex;}#floating-checkout:hover{transform:translateY(-3px);background:#b91450;}#floating-checkout i{font-size:15px;}#floating-cart-number{background:var(--gold);min-width:20px;height:20px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:10px;}.hero{padding:55px 20px 30px;text-align:center;background:radial-gradient(circle at top right,rgba(255,182,193,.25),transparent 35%),radial-gradient(circle at bottom left,rgba(197,160,89,.13),transparent 35%);}.hero-logo{width:145px;height:145px;object-fit:contain;margin-bottom:12px;}.hero h1{color:var(--deep-pink);font-size:clamp(30px,5vw,48px);font-weight:900;margin-bottom:8px;}.hero p{color:#777;font-size:15px;}.container{width:100%;max-width:1200px;margin:auto;padding:0 20px;}.section{padding:35px 0;}.section-title{text-align:center;color:var(--deep-pink);font-size:28px;font-weight:900;margin-bottom:15px;}.section-subtitle{text-align:center;color:#777;margin-top:-10px;margin-bottom:25px;font-size:14px;}.categories-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}.category-card{position:relative;height:260px;overflow:hidden;border-radius:16px;cursor:pointer;box-shadow:var(--shadow);background:white;}.category-card img{width:100%;height:100%;object-fit:cover;transition:.4s ease;}.category-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65),rgba(0,0,0,.05));}.category-card:hover img{transform:scale(1.05);}.category-name{position:absolute;z-index:2;bottom:18px;right:18px;left:18px;color:white;font-size:21px;font-weight:800;}.products-section{display:none;}.products-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px;}.products-header h2{color:var(--deep-pink);font-size:27px;font-weight:900;}.back-btn{border:none;background:var(--light-gold);color:#6b5221;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;}.products-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;width:100%;}.product-card{background:var(--white);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);min-width:0;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;}.product-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(197,160,89,.18);}.product-image-wrap{width:100%;height:240px;background:#fff;overflow:hidden;position:relative;}.product-image-wrap img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .3s ease;}.product-card:hover .product-image-wrap img{transform:scale(1.025);}.product-info{padding:11px 10px 13px;}.product-name{color:#333;font-size:15px;font-weight:700;line-height:1.5;min-height:48px;margin-bottom:5px;}.product-price{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:10px;}.old-price{color:#999;font-size:12px;text-decoration:line-through;}.new-price{color:var(--deep-pink);background:#fff3a8;padding:1px 5px;border-radius:2px;font-size:14px;font-weight:800;}.add-cart-btn{width:100%;border:none;background:var(--deep-pink);color:white;border-radius:7px;padding:10px 7px;cursor:pointer;font-size:12px;font-weight:700;transition:.25s;}.add-cart-btn:hover{background:#b91450;}#product-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:15px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .25s ease;}#product-modal.open{display:flex;}#product-modal.visible{opacity:1;}.modal-card{position:relative;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:18px;padding:20px 20px 22px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.85);transition:transform .25s ease;}#product-modal.visible .modal-card{transform:scale(1);}.modal-close{position:absolute;top:10px;left:10px;width:36px;height:36px;border:none;border-radius:50%;background:#ffe6ee;color:var(--deep-pink);font-size:16px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;}.modal-close:hover{background:var(--deep-pink);color:#fff;}.modal-image-wrap{width:100%;height:340px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;margin-bottom:14px;}.modal-image-wrap img{width:100%;height:100%;object-fit:contain;}.modal-image-wrap i{font-size:120px;color:var(--primary-pink);}.modal-name{font-size:19px;font-weight:800;line-height:1.6;color:#333;margin-bottom:10px;}.modal-price{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}.modal-price .old-price{font-size:15px;}.modal-price .new-price{font-size:20px;padding:2px 8px;}.modal-card .add-cart-btn{padding:13px 10px;font-size:15px;border-radius:10px;}.cart-section,.checkout-section{display:none;}.cart-box,.checkout-box{max-width:850px;margin:auto;background:white;border-radius:15px;box-shadow:var(--shadow);padding:25px;}.cart-items{display:flex;flex-direction:column;gap:12px;}.cart-item{display:flex;align-items:center;gap:15px;border-bottom:1px solid #eee;padding-bottom:12px;}.cart-item:last-child{border-bottom:none;}.cart-item-image{width:80px;height:80px;object-fit:contain;border-radius:8px;background:#fff8fa;flex-shrink:0;}.cart-item-info{flex:1;min-width:0;}.cart-item-name{font-weight:700;font-size:14px;margin-bottom:4px;}.cart-item-price{color:var(--deep-pink);font-weight:800;font-size:13px;margin-bottom:6px;}.quantity-controls{display:flex;align-items:center;gap:10px;}.qty-btn{background:#f4e8c1;color:#6b5221;border:none;width:26px;height:26px;border-radius:6px;cursor:pointer;font-weight:bold;display:flex;align-items:center;justify-content:center;transition:.2s;}.qty-btn:hover{background:var(--gold);color:white;}.qty-display{font-size:13px;font-weight:700;color:#444;}.remove-item{border:none;background:#ffe6ee;color:var(--deep-pink);width:32px;height:32px;border-radius:7px;cursor:pointer;flex-shrink:0;}.cart-total{border-top:1px solid #eee;margin-top:15px;padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:18px;font-weight:900;}.cart-total-value{color:var(--deep-pink);display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px;text-align:end;}.ship-plus{font-size:13px;font-weight:700;color:#8a6d2f;}.checkout-btn{width:100%;border:none;background:var(--deep-pink);color:white;padding:13px;border-radius:8px;cursor:pointer;margin-top:18px;font-weight:800;font-size:14px;}.empty-cart{text-align:center;padding:45px 15px;color:#999;}.empty-cart i{font-size:42px;color:var(--primary-pink);margin-bottom:12px;}.form-group{margin-bottom:16px;}.form-group label{display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:#555;}.form-group input,.form-group textarea{width:100%;border:1px solid #ead9df;background:#fffafb;border-radius:8px;padding:11px 12px;outline:none;font-size:14px;}.form-group textarea{min-height:95px;resize:vertical;}.payment-title{font-size:15px;font-weight:800;margin-bottom:10px;}.payment-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px;}.payment-option{border:1px solid #ead9df;background:#fffafb;border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:9px;}.payment-option:has(input:checked){border-color:var(--deep-pink);background:#fff1f5;}.payment-option input{accent-color:var(--deep-pink);}.payment-option img{width:35px;height:35px;object-fit:contain;}.payment-option i{color:var(--deep-pink);font-size:25px;width:35px;text-align:center;}.payment-option span{font-size:12px;font-weight:700;}footer{margin-top:45px;background:#fff;border-top:1px solid rgba(197,160,89,.2);padding:35px 20px 20px;text-align:center;}.footer-logo{width:75px;height:75px;object-fit:contain;margin-bottom:10px;}.footer-name{color:var(--deep-pink);font-size:20px;font-weight:900;margin-bottom:8px;}.footer-text{color:#777;font-size:13px;margin-bottom:18px;}.social-links{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:20px;}.social-btn{width:42px;height:42px;border-radius:50%;display:flex;justify-content:center;align-items:center;color:white;transition:.25s;overflow:hidden;}.whatsapp-btn{background:#25D366;}.instagram-btn{background:linear-gradient(45deg,#fdf497,#fd5949,#d6249f,#285AEB);}.instagram-btn img{width:22px;height:22px;object-fit:contain;}.copyright{color:#999;font-size:11px;}@media (max-width:767px){navbar{padding:8px;gap:5px;min-height:58px;}.nav-brand{gap:5px;}.nav-brand img{width:34px;height:34px;}.nav-brand span{font-size:12px;}.nav-links{gap:9px;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:none;}.nav-links::-webkit-scrollbar{display:none;}.nav-links a{font-size:11px;}.nav-actions{gap:4px;}.lang-btn{padding:6px 8px;font-size:10px;}.cart-icon-btn{padding:7px 9px;font-size:12px;}.hero{padding:35px 15px 25px;}.hero-logo{width:105px;height:105px;}.hero h1{font-size:30px;}.hero p{font-size:13px;}.container{padding:0 10px;}.section{padding:25px 0;}.section-title{font-size:22px;margin-bottom:12px;}.categories-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}.category-card{height:190px;border-radius:12px;}.category-name{bottom:12px;right:12px;left:12px;font-size:16px;}.products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 9px;}.products-header{margin-bottom:14px;}.products-header h2{font-size:21px;}.back-btn{padding:7px 10px;font-size:11px;}.product-card{border-radius:9px;}.product-image-wrap{height:175px;}.product-info{padding:7px 6px 10px;}.product-name{font-size:12.5px;line-height:1.42;min-height:52px;margin-bottom:4px;}.product-price{gap:4px;margin-bottom:8px;}.old-price{font-size:10px;}.new-price{font-size:12px;padding:1px 3px;}.add-cart-btn{padding:9px 3px;font-size:10px;border-radius:5px;}.modal-card{padding:16px 14px 18px;}.modal-image-wrap{height:290px;}.modal-name{font-size:16px;}.modal-card .add-cart-btn{font-size:13px;}.cart-box,.checkout-box{padding:15px;border-radius:12px;}.cart-item{gap:9px;}.cart-item-image{width:65px;height:65px;}.cart-item-name{font-size:12px;}.cart-item-price{font-size:11px;}.cart-total{font-size:15px;}.ship-plus{font-size:11px;}.payment-options{grid-template-columns:1fr;}#floating-checkout{bottom:15px;left:12px;right:12px;justify-content:center;padding:11px 15px;font-size:12px;}footer{padding:28px 15px 18px;}}
 </style>
@@ -37,7 +39,6 @@ setTimeout(removeLoader, 800);
 window.addEventListener("load", function () {
 setTimeout(removeLoader, 300);
 });
-// أمان إضافي: لو حصل أي خطأ في السكريبت الرئيسي نقفل اللودينج برضه
 window.addEventListener("error", function () {
 setTimeout(removeLoader, 500);
 });
@@ -250,6 +251,11 @@ document.body.appendChild(d);
 <div class="copyright">© BM cosmetics - AKR</div>
 </footer>
 <script>
+// إعدادات اتصال Supabase
+const SUPABASE_URL = "https://gcwkmsegnscwgwmmdal.supabase.co";
+const SUPABASE_KEY = "Sb_publishable_nlMoUgTSPQLfUzR67JxbZQ_3MKPV_OA";
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const koreanRaw = [
 ["Arencia Vitamin C Booster Shot 30ml","Hk1sgjn6/8f7fc898-5120-45ed-a68c-70b677351b64.jpg",1200,899],
 ["Arencia Eraser Shot Glycolic Acid Booster 30ml","XJqn8C11/2694f912-b0e0-4119-80be-8d99d76cfeb4.jpg",1200,899],
@@ -725,47 +731,64 @@ noResults: "No matching products found"
 };
 let currentLang = "ar";
 let cart = [];
-let currentProducts = [];   // المنتجات المعروضة حاليًا (للمودال)
-let modalProduct = null;    // المنتج المفتوح في المودال
+let currentProducts = [];   
+let modalProduct = null;    
 window.activeCategoryName = "";
 window.searchMode = false;
 const IMG_BASE = "https://i.postimg.cc/";
+
 function toProducts(list) {
 return (list || []).map(function(r) {
 return { name: r[0], image: IMG_BASE + r[1], oldPrice: r[2], newPrice: r[3] };
 });
 }
+
 const koreanProducts = toProducts(typeof koreanRaw !== "undefined" ? koreanRaw : []);
+
+// تم تنظيف الأقسام وإزالة المنتجات الفارغة، والاعتماد على الداتا الأصلية فقط + جلب المنتجات المضافة من قاعدة البيانات Supabase
 const categoryProducts = {
-"Skin Care": toProducts(typeof skinRaw !== "undefined" ? skinRaw : []).concat([
-{ name: "Skin Care Product 1", price: 180 },
-{ name: "Skin Care Product 2", price: 240 },
-{ name: "Skin Care Product 3", price: 320 },
-{ name: "Skin Care Product 4", price: 280 },
-{ name: "Skin Care Product 5", price: 350 }
-]),
-"Hair Care": toProducts(typeof hairRaw !== "undefined" ? hairRaw : []).concat([
-{ name: "Hair Care Product 1", price: 180 },
-{ name: "Hair Care Product 2", price: 240 },
-{ name: "Hair Care Product 3", price: 320 },
-{ name: "Hair Care Product 4", price: 280 },
-{ name: "Hair Care Product 5", price: 350 }
-]),
-"Body Care": [
-{ name: "Body Care Product 1", price: 180 },
-{ name: "Body Care Product 2", price: 240 },
-{ name: "Body Care Product 3", price: 320 },
-{ name: "Body Care Product 4", price: 280 },
-{ name: "Body Care Product 5", price: 350 }
-],
-"Kids": toProducts(typeof kidsRaw !== "undefined" ? kidsRaw : []).concat([
-{ name: "Kids Product 1", price: 180 },
-{ name: "Kids Product 2", price: 240 },
-{ name: "Kids Product 3", price: 320 },
-{ name: "Kids Product 4", price: 280 },
-{ name: "Kids Product 5", price: 350 }
-])
+"Skin Care": toProducts(typeof skinRaw !== "undefined" ? skinRaw : []),
+"Hair Care": toProducts(typeof hairRaw !== "undefined" ? hairRaw : []),
+"Body Care": [],
+"Kids": toProducts(typeof kidsRaw !== "undefined" ? kidsRaw : [])
 };
+
+// دالة لجلب المنتجات من جدول Supabase وتدشينها في الأقسام
+async function fetchSupabaseProducts() {
+  try {
+    const { data, error } = await _supabase.from('products').select('*');
+    if (error) {
+      console.error("Error fetching from supabase:", error);
+      return;
+    }
+    if (data && data.length > 0) {
+      data.forEach(p => {
+        const mappedProduct = {
+          name: p.name,
+          image: p.image_url,
+          oldPrice: p.old_price,
+          newPrice: p.new_price
+        };
+        const cat = p.category;
+        if (cat === "Korean") {
+          koreanProducts.push(mappedProduct);
+        } else if (categoryProducts[cat]) {
+          categoryProducts[cat].push(mappedProduct);
+        }
+      });
+    }
+  } catch (err) {
+    console.error("Supabase fetch exception:", err);
+  }
+}
+
+// تشغيل جلب بيانات Supabase فور تحميل الصفحة
+document.addEventListener("DOMContentLoaded", async function() {
+  await fetchSupabaseProducts();
+  try { applyPlaceholders(); } catch (e) { console.error(e); }
+  try { updateCart(); } catch (e) { console.error(e); }
+});
+
 // Fuzzy search algorithm (Levenshtein Distance based)
 function similarityScore(s1, s2) {
 let longer = s1, shorter = s2;
@@ -815,7 +838,6 @@ if (!matched) return false;
 }
 return true;
 }
-// تحديث الـ placeholders حسب اللغة
 function applyPlaceholders() {
 document.querySelectorAll("[data-placeholder]").forEach(function(el) {
 const key = el.getAttribute("data-placeholder");
@@ -843,7 +865,6 @@ document.getElementById("floating-checkout-text").innerText = translations[curre
 const productsVisible = document.getElementById("products-page").style.display === "block";
 if (productsVisible) {
 if (window.searchMode) {
-// نحافظ على نتائج البحث ونحدّث العنوان والنصوص بس
 document.getElementById("category-title").innerText = translations[currentLang].searchResults;
 const q = document.getElementById("general-search-input").value;
 handleGeneralSearch(q, true);
@@ -854,7 +875,6 @@ document.getElementById("category-search-input").value = q;
 handleCategorySearch(q);
 }
 }
-// لو المودال مفتوح نحدّث زرار الإضافة
 if (modalProduct) {
 document.getElementById("modal-add-btn").innerHTML =
 '<i class="fa-solid fa-cart-plus"></i> ' + translations[currentLang].addToCart;
@@ -905,7 +925,6 @@ if (!keepScroll) window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function handleCategorySearch(query) {
 if (window.searchMode) {
-// وإحنا في نتائج البحث العام، بحث القسم يفلتر نفس البحث العام
 handleGeneralSearch(document.getElementById("general-search-input").value, true);
 return;
 }
@@ -971,9 +990,6 @@ ${oldPriceHTML}
 productsGrid.insertAdjacentHTML("beforeend", productHTML);
 });
 }
-/* =========================
-PRODUCT MODAL
-========================= */
 function openProductModal(index) {
 const product = currentProducts[index];
 if (!product) return;
@@ -993,7 +1009,6 @@ document.getElementById("modal-add-btn").innerHTML =
 const modal = document.getElementById("product-modal");
 modal.classList.add("open");
 document.body.style.overflow = "hidden";
-// نستنى فريم عشان الأنيميشن يشتغل
 requestAnimationFrame(function() {
 requestAnimationFrame(function() {
 modal.classList.add("visible");
@@ -1001,7 +1016,6 @@ modal.classList.add("visible");
 });
 }
 function closeProductModal(event) {
-// لو الضغطة جوه الكارت نفسه متقفلش
 if (event && event.target && event.target.id !== "product-modal") return;
 const modal = document.getElementById("product-modal");
 if (!modal.classList.contains("open")) return;
@@ -1026,9 +1040,6 @@ const p = currentProducts[index];
 if (!p) return;
 addToCart(p.name, p.newPrice, p.image || "", button);
 }
-/* =========================
-CART
-========================= */
 function addToCart(name, price, image, button) {
 let existingItem = cart.find(item => item.name === name && item.price === Number(price));
 if (existingItem) {
@@ -1061,7 +1072,6 @@ cart[index].quantity = newQty;
 updateCart();
 }
 }
-// الزرار العائم يظهر بس لو في منتجات في السلة ومش واقفين في السلة أو صفحة الطلب
 function refreshFloating() {
 const btn = document.getElementById("floating-checkout");
 if (!btn) return;
@@ -1169,10 +1179,6 @@ const message = `مرحباً، اريد طلب المنتجات الآتية:\n
 const whatsappUrl = "https://wa.me/201099872665?text=" + encodeURIComponent(message);
 window.open(whatsappUrl, "_blank");
 }
-document.addEventListener("DOMContentLoaded", function() {
-try { applyPlaceholders(); } catch (e) { console.error(e); }
-try { updateCart(); } catch (e) { console.error(e); }
-});
 </script>
 </body>
 </html>
