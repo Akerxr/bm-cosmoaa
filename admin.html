@@ -15,7 +15,9 @@
     input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
     button { width: 100%; background: #d81b60; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
     button:disabled { background: #ccc; }
-    #msg { text-align: center; margin-top: 15px; font-weight: bold; line-height: 1.6; word-break: break-all; }
+    #msg { text-align: center; margin-top: 15px; font-weight: bold; word-break: break-all; }
+    .img-preview { width: 100%; height: 150px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-top: 5px; overflow: hidden; background: #fafafa; }
+    .img-preview img { width: 100%; height: 100%; object-fit: contain; }
   </style>
 </head>
 <body>
@@ -45,8 +47,11 @@
       <input type="number" id="p-old-price" placeholder="300">
     </div>
     <div class="form-group">
-      <label>اختر صورة المنتج من جهازك</label>
-      <input type="file" id="p-file" accept="image/*">
+      <label>رابط الصورة (Image URL)</label>
+      <input type="url" id="p-image" placeholder="https://i.postimg.cc/..." oninput="previewImage(this.value)">
+      <div class="img-preview" id="preview-box">
+        <span style="color: #999; font-size: 13px;">معاينة الصورة ستظهر هنا</span>
+      </div>
     </div>
     <button id="submit-btn" onclick="uploadProduct()">إضافة المنتج فوراً</button>
     <div id="msg"></div>
@@ -57,55 +62,36 @@
   const SUPABASE_KEY = "Sb_publishable_nlMoUgTSPQLfUzR67JxbZQ_3MKPV_OA";
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  function previewImage(url) {
+    const box = document.getElementById("preview-box");
+    if (url.trim() !== "") {
+      box.innerHTML = `<img src="${url}" alt="Preview" onerror="this.onerror=null; this.parentNode.innerHTML='<span style=\'color:red; font-size:12px;\'>رابط الصورة غير صالح</span>';">`;
+    } else {
+      box.innerHTML = `<span style="color: #999; font-size: 13px;">معاينة الصورة ستظهر هنا</span>`;
+    }
+  }
+
   async function uploadProduct() {
     const name = document.getElementById("p-name").value.trim();
     const category = document.getElementById("p-category").value;
     const price = document.getElementById("p-price").value;
     const oldPrice = document.getElementById("p-old-price").value;
-    const fileInput = document.getElementById("p-file");
+    const imageUrl = document.getElementById("p-image").value.trim();
     const msg = document.getElementById("msg");
     const btn = document.getElementById("submit-btn");
 
-    if (!name || !price || !fileInput.files[0]) {
+    if (!name || !price || !imageUrl) {
       msg.style.color = "red";
-      msg.innerText = "من فضلك املأ كل البيانات واختر صورة للمنتج";
+      msg.innerText = "من فضلك املأ كل البيانات واكتب رابط الصورة";
       return;
     }
 
     btn.disabled = true;
     msg.style.color = "#333";
-    msg.innerText = "جاري رفع الصورة والبيانات...";
+    msg.innerText = "جاري إضافة المنتج...";
 
     try {
-      const file = fileInput.files[0];
-      const fileExt = file.name.split('.').pop().toLowerCase() || 'jpg';
-      const cleanFileName = `img_${Date.now()}.${fileExt}`;
-      const arrayBuffer = await file.arrayBuffer();
-
-      // 1. رفع الصورة إلى Storage
-      const { data: imgData, error: imgErr } = await _supabase.storage
-        .from("products")
-        .upload(cleanFileName, arrayBuffer, {
-          contentType: file.type || 'image/jpeg',
-          upsert: true
-        });
-
-      if (imgErr) {
-        // تحليل خطأ الـ Storage
-        console.error("Storage Error:", imgErr);
-        let errorMsg = imgErr.message || JSON.stringify(imgErr);
-        if (errorMsg.includes("row-level security") || errorMsg.includes("policy") || errorMsg.includes("Access Denied") || errorMsg.includes("Unauthorized")) {
-          throw new Error("مشكلة سياسة (Storage Policy): صلاحيات الرفع على مخزن الصور غير مفعلة أو محظورة في Supabase.");
-        } else if (errorMsg.includes("Invalid API key") || errorMsg.includes("JWT") || errorMsg.includes("apikey")) {
-          throw new Error("مشكلة API (API Key): مفتاح الربط أو رابط Supabase غير صحيح.");
-        } else {
-          throw new Error("مشكلة في رفع الصورة (Storage): " + errorMsg);
-        }
-      }
-
-      const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/products/${cleanFileName}`;
-
-      // 2. إدخال بيانات المنتج في Database
+      // إدخال البيانات مباشرة في قاعدة البيانات بدون مشاكل رفع الـ Storage
       const { error: dbErr } = await _supabase.from("products").insert([{
         name: name,
         category: category,
@@ -114,29 +100,19 @@
         image_url: imageUrl
       }]);
 
-      if (dbErr) {
-        // تحليل خطأ الـ Database
-        console.error("Database Error:", dbErr);
-        let dbErrorMsg = dbErr.message || JSON.stringify(dbErr);
-        if (dbErrorMsg.includes("row-level security") || dbErrorMsg.includes("policy")) {
-          throw new Error("مشكلة سياسة (Database Policy): جدول المنتجات يحتاج لضبط سياسات RLS الخاصة به.");
-        } else if (dbErrorMsg.includes("API key") || dbErrorMsg.includes("JWT")) {
-          throw new Error("مشكلة API (API Key): مفتاح الربط غير صالح للتعامل مع قاعدة البيانات.");
-        } else {
-          throw new Error("مشكلة في قاعدة البيانات (Database): " + dbErrorMsg);
-        }
-      }
+      if (dbErr) throw dbErr;
 
       msg.style.color = "green";
       msg.innerText = "تمت إضافة المنتج بنجاح! 🎉";
       document.getElementById("p-name").value = "";
       document.getElementById("p-price").value = "";
       document.getElementById("p-old-price").value = "";
-      fileInput.value = "";
+      document.getElementById("p-image").value = "";
+      document.getElementById("preview-box").innerHTML = `<span style="color: #999; font-size: 13px;">معاينة الصورة ستظهر هنا</span>`;
     } catch (err) {
       console.error(err);
       msg.style.color = "red";
-      msg.innerText = err.message || "حدث خطأ غير معروف أثناء الرفع.";
+      msg.innerText = "حدث خطأ: " + (err.message || JSON.stringify(err));
     } finally {
       btn.disabled = false;
     }
