@@ -15,7 +15,7 @@
     input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
     button { width: 100%; background: #d81b60; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
     button:disabled { background: #ccc; }
-    #msg { text-align: center; margin-top: 15px; font-weight: bold; }
+    #msg { text-align: center; margin-top: 15px; font-weight: bold; line-height: 1.6; word-break: break-all; }
   </style>
 </head>
 <body>
@@ -53,7 +53,6 @@
   </div>
 
 <script>
-  // بيانات الربط الخاصة بك
   const SUPABASE_URL = "https://gcwkmsegnscwgwmmdal.supabase.co";
   const SUPABASE_KEY = "Sb_publishable_nlMoUgTSPQLfUzR67JxbZQ_3MKPV_OA";
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -75,28 +74,38 @@
 
     btn.disabled = true;
     msg.style.color = "#333";
-    msg.innerText = "جاري الرفع...";
+    msg.innerText = "جاري رفع الصورة والبيانات...";
 
     try {
       const file = fileInput.files[0];
-      // تنظيف اسم الملف وحفظه بأرقام ورموز عشوائية بسيطة لتفادي مشاكل الأجهزة والمتصفحات
-      const fileExt = file.name.split('.').pop();
-      const cleanFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+      const fileExt = file.name.split('.').pop().toLowerCase() || 'jpg';
+      const cleanFileName = `img_${Date.now()}.${fileExt}`;
+      const arrayBuffer = await file.arrayBuffer();
 
-      // 1. رفع الصورة مباشرة لمخزن الصور Storage
+      // 1. رفع الصورة إلى Storage
       const { data: imgData, error: imgErr } = await _supabase.storage
         .from("products")
-        .upload(cleanFileName, file, {
-          cacheControl: '3600',
+        .upload(cleanFileName, arrayBuffer, {
+          contentType: file.type || 'image/jpeg',
           upsert: true
         });
 
-      if (imgErr) throw imgErr;
+      if (imgErr) {
+        // تحليل خطأ الـ Storage
+        console.error("Storage Error:", imgErr);
+        let errorMsg = imgErr.message || JSON.stringify(imgErr);
+        if (errorMsg.includes("row-level security") || errorMsg.includes("policy") || errorMsg.includes("Access Denied") || errorMsg.includes("Unauthorized")) {
+          throw new Error("مشكلة سياسة (Storage Policy): صلاحيات الرفع على مخزن الصور غير مفعلة أو محظورة في Supabase.");
+        } else if (errorMsg.includes("Invalid API key") || errorMsg.includes("JWT") || errorMsg.includes("apikey")) {
+          throw new Error("مشكلة API (API Key): مفتاح الربط أو رابط Supabase غير صحيح.");
+        } else {
+          throw new Error("مشكلة في رفع الصورة (Storage): " + errorMsg);
+        }
+      }
 
-      // رابط الصورة المرفوعة
       const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/products/${cleanFileName}`;
 
-      // 2. إدخال بيانات المنتج والرسوم في قاعدة البيانات
+      // 2. إدخال بيانات المنتج في Database
       const { error: dbErr } = await _supabase.from("products").insert([{
         name: name,
         category: category,
@@ -105,7 +114,18 @@
         image_url: imageUrl
       }]);
 
-      if (dbErr) throw dbErr;
+      if (dbErr) {
+        // تحليل خطأ الـ Database
+        console.error("Database Error:", dbErr);
+        let dbErrorMsg = dbErr.message || JSON.stringify(dbErr);
+        if (dbErrorMsg.includes("row-level security") || dbErrorMsg.includes("policy")) {
+          throw new Error("مشكلة سياسة (Database Policy): جدول المنتجات يحتاج لضبط سياسات RLS الخاصة به.");
+        } else if (dbErrorMsg.includes("API key") || dbErrorMsg.includes("JWT")) {
+          throw new Error("مشكلة API (API Key): مفتاح الربط غير صالح للتعامل مع قاعدة البيانات.");
+        } else {
+          throw new Error("مشكلة في قاعدة البيانات (Database): " + dbErrorMsg);
+        }
+      }
 
       msg.style.color = "green";
       msg.innerText = "تمت إضافة المنتج بنجاح! 🎉";
@@ -116,7 +136,7 @@
     } catch (err) {
       console.error(err);
       msg.style.color = "red";
-      msg.innerText = "حدث خطأ: " + (err.message || err.error_description || JSON.stringify(err));
+      msg.innerText = err.message || "حدث خطأ غير معروف أثناء الرفع.";
     } finally {
       btn.disabled = false;
     }
